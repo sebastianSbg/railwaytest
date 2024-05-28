@@ -4,6 +4,8 @@
 import "./App.css";
 
 function App() {
+  console.log("Sebs app is starting!");
+
   return (
     <>
       <h1>Sebs test app! Updated git repo.</h1>
