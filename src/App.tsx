@@ -2,13 +2,18 @@
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "/vite.svg";
 import "./App.css";
+import { FormID } from "./components/FormID";
 
 function App() {
-  console.log("Sebs app is starting!");
-
   return (
     <>
       <h1>Sebs test app! Updated git repo.</h1>
+
+      <FormID
+        disp_string={["Form 1", "Form 2", "Form 3"]}
+        disp_heading={"Heading"}
+        country_choises={["Austra"]}
+      />
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
