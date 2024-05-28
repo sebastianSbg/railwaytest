@@ -6,7 +6,7 @@ import "./App.css";
 function App() {
   return (
     <>
-      <h1>Sebs test app</h1>
+      <h1>Sebs test app! Updated git repo.</h1>
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
