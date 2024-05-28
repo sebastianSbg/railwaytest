@@ -3,6 +3,8 @@
 // import viteLogo from "/vite.svg";
 import "./App.css";
 import { FormID } from "./components/FormID";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
