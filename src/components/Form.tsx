@@ -72,7 +72,10 @@ const Form = () => {
     console.log(data);
 
     axios
-      .post("http://127.0.0.1:8000/store/products/", data)
+      .post(
+        "https://formbackend-production-6eb5.up.railway.app/store/products/",
+        data
+      )
       .then((response) => {
         console.log("Form submitted successfully:", response.data);
         setFormSubmitted(true);
