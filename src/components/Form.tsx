@@ -167,7 +167,7 @@ const Form = () => {
         <>
           <div className="text-center mt-5">
             <h1 mb-5>Thank you for submitting the form!</h1>
-            <h2 mb-5>The lock-box code is: </h2>
+            <h2 mb-5>The lock-box code is: + {process.env.LOCKBOX_CODE}</h2>
           </div>
         </>
       )}
