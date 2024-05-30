@@ -17,18 +17,17 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
       <div className="form-person">
         <h3 className="display-6 mb-3 center-text">Basic Info</h3>
         <p className="mb-3">
-          Alle naechtigende Gaeste sind verplichted dieses Formular zur
-          Registrierung auszufuellen:
+          All overnight guests are required to fill out this form to register
+          and comply with local regulations:
           <a
             href="https://www.usp.gv.at/brancheninformationen/gastronomie-und-tourismus/gaesteverzeichnis.html"
             target="_blank"
           >
-            {" Gesetzesvorlage"}
+            {" law info"}
           </a>
         </p>
         <p className="mb-5">
-          Die Lockbox Schluesselkombination wird am Ende des Formulars zur
-          Verfuegung gestellt.
+          The lockbox code will be provided at the end of the form.
         </p>
         <ScrollableDropdown
           dispName="Form language"
