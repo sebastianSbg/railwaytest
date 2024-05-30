@@ -28,6 +28,8 @@ let data: Data = {};
 // };
 
 const Form = () => {
+  const LOCKBOX_CODE = import.meta.env.VITE_LOCKBOX_CODE;
+
   const [numGuests, setNumGuests] = useState(1);
   const nightStayRadio = useRef(0);
   const [radioButton, setRadioButton] = useState(0);
@@ -167,7 +169,7 @@ const Form = () => {
         <>
           <div className="text-center mt-5">
             <h1 mb-5>Thank you for submitting the form!</h1>
-            <h2 mb-5>The lock-box code is: + {process.env.LOCKBOX_CODE}</h2>
+            <h2 mb-5>The lock-box code is: {LOCKBOX_CODE}</h2>
           </div>
         </>
       )}
