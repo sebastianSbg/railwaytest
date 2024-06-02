@@ -1,4 +1,4 @@
-import { useRef, useState, forwardRef } from "react";
+import { useRef, useState, forwardRef, useEffect } from "react";
 import ScrollableDropdown from "./ScrollableDropdown";
 import "../App.css";
 
@@ -11,6 +11,13 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
   const [selectedOption, setSelectedOption] = useState(0);
 
   const localRef = useRef(0);
+
+  useEffect(() => {
+    ref.current = {
+      ...ref.current,
+      stay_overnight: true,
+    };
+  }, []);
 
   return (
     <>
@@ -26,8 +33,9 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
             {" law info"}
           </a>
         </p>
-        <p className="mb-5">
-          The lockbox code will be provided at the end of the form.
+        <p className="mb-4">
+          The lockbox code will be provided after on the next page, after the
+          form submission.
         </p>
         <ScrollableDropdown
           dispName="Form language"
@@ -35,7 +43,7 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
           onChange={onLanguageChange}
         />
 
-        <div className="form-check">
+        <div className="form-check mb-2">
           <input
             className="form-check-input"
             type="radio"
@@ -47,11 +55,15 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
               localRef.current = 0;
               ref.current = 0;
               console.log(localRef.current);
+              ref.current = {
+                ...ref.current,
+                stay_overnight: true,
+              };
             }}
             onChange={onRadioChange(0)}
           />
           <label className="form-check-label" htmlFor="flexRadioDefault1">
-            I am staying the nights.
+            I am staying at the Airbnb overnight.
           </label>
         </div>
         <div className="form-check">
@@ -66,12 +78,16 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
               localRef.current = 1;
               ref.current = 1;
               console.log(localRef.current);
+              ref.current = {
+                ...ref.current,
+                stay_overnight: false,
+              };
             }}
             onChange={onRadioChange(1)}
           />
           <label className="form-check-label" htmlFor="flexRadioDefault2">
-            I am NOT staying the nights. (Only limited information is needed
-            from the guest.)
+            I am NOT staying at the Airbnb overnight. (Only limited information
+            is needed.)
           </label>
         </div>
       </div>

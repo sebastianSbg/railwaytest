@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { Signature } from "./Signature";
 import countriesEN from "../assets/listOfCountries";
@@ -30,6 +30,10 @@ let data: Data = {};
 const Form = () => {
   const LOCKBOX_CODE = import.meta.env.VITE_LOCKBOX_CODE;
 
+  const [sigValid, setSigValid] = useState(false);
+  const [confirmValid, setConfirmValid] = useState(false);
+  const [stayValid, setStayValid] = useState(false);
+
   const [numGuests, setNumGuests] = useState(1);
   const nightStayRadio = useRef(0);
   const [radioButton, setRadioButton] = useState(0);
@@ -60,13 +64,18 @@ const Form = () => {
   //     refFormData.current?.stay_valid) ||
   //   radioButton == 1;
 
-  let is_valid = true;
+  let is_valid = sigValid && confirmValid && stayValid;
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!is_valid) {
       return;
     }
+
+    useEffect(() => {
+      is_valid = sigValid && confirmValid && stayValid;
+    }),
+      [sigValid, confirmValid, stayValid];
 
     // TODO: validate that signature is OK
     data = { ...data, ...refFormData.current };
@@ -95,13 +104,14 @@ const Form = () => {
           <form onSubmit={handleSubmit}>
             <div className="form-div-mobile">
               <FormBasicInfo
-                ref={nightStayRadio}
+                ref={refFormData}
                 onLanguageChange={setLanguage}
                 onRadioChange={onRadioButtonUpdate}
               />
               <FormStay
                 disp_string={["Arrival date", "Departure date", "# of guests"]}
                 onChangeNumGuests={setNumGuests}
+                onIsValid={setStayValid}
                 ref={refFormData}
               />
               {radioButton === 0 &&
@@ -136,9 +146,9 @@ const Form = () => {
                 <FormID
                   disp_heading={"ID"}
                   disp_string={[
-                    "ID #",
+                    "ID number",
                     "Date issued",
-                    "Institution",
+                    "Issuing Institution",
                     "Issuing Country",
                   ]}
                   country_choises={countriesEN}
@@ -146,17 +156,46 @@ const Form = () => {
                   ref={refFormData}
                 />
               )}
-              <div className="form-person text-center">
-                <h3 className="display-6 mb-3 center-text">Signature</h3>
-                <Signature ref={refSignature} />
-                <div className="mt-5 mb-2">
+              <div className="form-person">
+                <h3 className="display-6 mb-4 center-text">Signature</h3>
+
+                <div className="form-check mb4">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckChecked"
+                    // checked
+                    onChange={(e) => {
+                      setConfirmValid(e.target.checked);
+                    }}
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexCheckChecked"
+                  >
+                    I confirm that the provided information is accurate.
+                  </label>
+
+                  {!confirmValid && (
+                    <p className="text-danger">Must be checked.</p>
+                  )}
+                </div>
+
+                <div className="center-text mt-4">
+                  <Signature onValid={setSigValid} ref={refSignature} />
+                  {!sigValid && (
+                    <p className="text-danger">Invalid signature</p>
+                  )}
+                </div>
+
+                <div className="mt-4 mb-2 center-text">
                   <button disabled={!is_valid} className="btn btn-primary">
                     Submit
                   </button>
                   {!is_valid && (
                     <p className="text-danger">
-                      Not all fields are valid! Can't submit until the form is
-                      corrected!
+                      One or more entries are incomplete or invalid.
                     </p>
                   )}
                 </div>

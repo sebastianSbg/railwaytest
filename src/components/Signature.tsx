@@ -7,10 +7,16 @@ export type SignatureRef = {
   getSVG: () => void;
 };
 
-interface SignatureProps {}
+interface SignatureProps {
+  onValid?: any;
+  minLenSVG?: number;
+}
 
 export const Signature = forwardRef(
-  ({}: SignatureProps, ref: React.Ref<SignatureRef>) => {
+  (
+    { onValid = null, minLenSVG = 2500 }: SignatureProps,
+    ref: React.Ref<SignatureRef>
+  ) => {
     // Refs for the canvas and SignaturePad instance
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const signaturePadRef = useRef<SignaturePad | null>(null);
@@ -26,6 +32,16 @@ export const Signature = forwardRef(
           penColor: "black",
         });
 
+        signaturePad.addEventListener(
+          "endStroke",
+          () => {
+            if (onValid) {
+              onValid(getSVG().length > minLenSVG);
+            }
+          },
+          { once: false }
+        );
+
         // Save the SignaturePad instance to a ref
         signaturePadRef.current = signaturePad;
       }
@@ -35,6 +51,9 @@ export const Signature = forwardRef(
     const clearSignature = () => {
       if (signaturePadRef.current) {
         signaturePadRef.current.clear();
+        if (onValid) {
+          onValid(getSVG().length > minLenSVG);
+        }
       }
     };
 
@@ -52,7 +71,13 @@ export const Signature = forwardRef(
 
     return (
       <div style={{ position: "relative", display: "inline-block" }}>
-        <canvas ref={canvasRef} style={{ border: "2px solid gray" }} />
+        <canvas
+          onDrag={() => {
+            console.log("avirted");
+          }}
+          ref={canvasRef}
+          style={{ border: "2px solid gray" }}
+        />
         <button
           onClick={clearSignature}
           type="button"

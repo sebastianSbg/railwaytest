@@ -43,6 +43,25 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
 
     const [startDate, setStartDate] = useState<Date | null>(null);
 
+    const set_placeholder = (
+      field_name: any,
+      ref: any,
+      default_value?: any
+    ) => {
+      let fieldExists = false;
+
+      if (ref.current) {
+        // Check if the field exists in ref.current
+        fieldExists = field_name.toString() in ref.current;
+      }
+
+      if (fieldExists) {
+        return ref.current[field_name];
+      } else {
+        return default_value ? default_value : "";
+      }
+    };
+
     return (
       <>
         <div className="form-person">
@@ -55,9 +74,10 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               {/* <label htmlFor="last_name" className="form-label"></label> */}
               <input
                 {...register("first_name")}
-                id="first_name"
+                id={"person_first_name_" + id}
                 type="text"
                 className="form-control"
+                placeholder={set_placeholder("person_first_name_" + id, ref)}
                 onBlur={(e) => {
                   trigger("first_name");
                   ref
@@ -78,8 +98,9 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               {/* <label htmlFor="last_name" className="form-label"></label> */}
               <input
                 {...register("last_namme")}
-                id="last_namme"
+                id={"person_last_name_" + id}
                 type="text"
+                placeholder={set_placeholder("person_last_name_" + id, ref)}
                 className="form-control"
                 onBlur={(e) => {
                   trigger("last_namme");
@@ -100,7 +121,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
             <select
               className="form-select"
               {...register("country")}
-              id="id_country"
+              id={"person_country_" + id}
               onBlur={(e) => {
                 trigger("country");
                 ref
@@ -121,7 +142,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
             <select
               className="form-select"
               {...register("sex")}
-              id="id_country"
+              id={"person_sex_" + id}
               onBlur={(e) => {
                 trigger("sex");
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
