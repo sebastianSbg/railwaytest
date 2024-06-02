@@ -8,25 +8,65 @@ interface FormAddressProps {
   disp_string: string[];
   disp_heading: string;
   country_choises: string[];
-  onBlur?: any;
+  onValid?: any;
 }
+
+const noNumbers = (value: string) => !/\d/.test(value);
 
 const schema = z.object({
   addr_valid: z.boolean(),
   addr_street: z.string().min(3, { message: "Invalid street" }),
-  addr_city: z.string().min(3, { message: "Invalid city" }),
-  addr_zip: z.number().min(1000, { message: "Invalid addr_zip code" }),
-  addr_country: z.string().refine((value) => value !== "Choose...", {
-    message: "Select a country",
-  }),
+  addr_city: z
+    .string()
+    .min(3, { message: "Invalid city" })
+    .refine(noNumbers, { message: "City should not contain numbers" }),
+  addr_zip: z
+    .number({ message: "Invalid ZIP code" })
+    .min(1000, { message: "Invalid ZIP code" }),
+  addr_country: z
+    .string()
+    .min(1, { message: "Select a country" })
+    .refine((value) => value !== "Choose...", {
+      message: "Select a country",
+    }),
 });
 
 export type FormAddressRef = z.infer<typeof schema>; // this should be used as the ref
 
 export const FormAddress = forwardRef<any, FormAddressProps>(
-  ({ disp_string, disp_heading, country_choises, onBlur }, ref: any) => {
+  ({ disp_string, disp_heading, country_choises, onValid }, ref: any) => {
     useEffect(() => {
+      if (ref.current) {
+        if ("addr_valid" in ref.current) {
+          setValue("addr_valid", ref.current.addr_valid);
+          trigger("addr_valid");
+        } else {
+          setValue("addr_valid", false);
+          trigger("addr_valid");
+        }
+        if ("addr_street" in ref.current) {
+          setValue("addr_street", ref.current.addr_street);
+          trigger("addr_street");
+        }
+        if ("addr_city" in ref.current) {
+          setValue("addr_city", ref.current.addr_city);
+          trigger("addr_city");
+        }
+        if ("addr_zip" in ref.current) {
+          setValue("addr_zip", ref.current.addr_zip);
+          trigger("addr_zip");
+        }
+        if ("addr_country" in ref.current) {
+          setValue("addr_country", ref.current.addr_country);
+          trigger("addr_country");
+        }
+        return;
+      }
       setValue("addr_valid", false); // initialize original value
+      ref.current = {
+        ...ref.current,
+        addr_valid: false,
+      };
     }, []);
 
     const {
@@ -35,6 +75,35 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
       trigger,
       setValue,
     } = useForm<FormAddressRef>({ resolver: zodResolver(schema) });
+
+    useEffect(() => {
+      console.log("addr_valid_changed");
+      console.log(isValid);
+      ref.current = {
+        ...ref.current,
+        addr_valid: isValid,
+      };
+      onValid(isValid);
+    }, [isValid]);
+
+    const set_placeholder = (
+      field_name: any,
+      ref: any,
+      default_value?: any
+    ) => {
+      let fieldExists = false;
+
+      if (ref.current) {
+        // Check if the field exists in ref.current
+        fieldExists = field_name.toString() in ref.current;
+      }
+
+      if (fieldExists) {
+        return ref.current[field_name];
+      } else {
+        return default_value ? default_value : "";
+      }
+    };
 
     return (
       <>
@@ -59,10 +128,6 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                         addr_street: e.target.value,
                       })
                     : null;
-                  ref
-                    ? (ref.current = { ...ref.current, addr_valid: isValid })
-                    : false;
-                  onBlur();
                 }}
               />
             </div>
@@ -83,6 +148,7 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 id="addr_city"
                 type="text"
                 className="form-control"
+                placeholder={set_placeholder("addr_city", ref)}
                 onBlur={(e) => {
                   trigger("addr_city");
                   ref
@@ -91,10 +157,6 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                         addr_city: e.target.value,
                       })
                     : null;
-                  ref
-                    ? (ref.current = { ...ref.current, addr_valid: isValid })
-                    : false;
-                  onBlur();
                 }}
               />
             </div>
@@ -115,18 +177,15 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 id="addr_zip"
                 type="number"
                 className="form-control"
+                placeholder={set_placeholder("addr_zip", ref)}
                 onBlur={(e) => {
                   trigger("addr_zip");
-                  ref
-                    ? (ref.current = { ...ref.current, addr_valid: isValid })
-                    : false;
                   ref
                     ? (ref.current = {
                         ...ref.current,
                         addr_zip: e.target.value,
                       })
                     : null;
-                  onBlur();
                 }}
               />
             </div>
@@ -148,19 +207,14 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
               onBlur={(e) => {
                 trigger("addr_country");
                 ref
-                  ? (ref.current = { ...ref.current, addr_valid: isValid })
-                  : false;
-                ref
                   ? (ref.current = {
                       ...ref.current,
                       addr_country: e.target.value,
                     })
                   : null;
-                console.log(e.target.value);
-                onBlur();
               }}
             >
-              <option selected>Choose...</option>
+              <option selected>{set_placeholder("addr_country", ref)}</option>
               {country_choises.map((option) => (
                 <option value={option}>{option}</option>
               ))}

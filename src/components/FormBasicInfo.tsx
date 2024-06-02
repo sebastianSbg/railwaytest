@@ -10,8 +10,6 @@ interface cf {
 const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
   const [selectedOption, setSelectedOption] = useState(0);
 
-  const localRef = useRef(0);
-
   useEffect(() => {
     ref.current = {
       ...ref.current,
@@ -52,9 +50,6 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
             checked={selectedOption === 0}
             onClick={() => {
               setSelectedOption(0);
-              localRef.current = 0;
-              ref.current = 0;
-              console.log(localRef.current);
               ref.current = {
                 ...ref.current,
                 stay_overnight: true,
@@ -75,9 +70,6 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
             checked={selectedOption === 1}
             onClick={() => {
               setSelectedOption(1);
-              localRef.current = 1;
-              ref.current = 1;
-              console.log(localRef.current);
               ref.current = {
                 ...ref.current,
                 stay_overnight: false,

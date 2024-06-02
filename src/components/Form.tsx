@@ -33,6 +33,8 @@ const Form = () => {
   const [sigValid, setSigValid] = useState(false);
   const [confirmValid, setConfirmValid] = useState(false);
   const [stayValid, setStayValid] = useState(false);
+  const [addrValid, setAddrValid] = useState(false);
+  const [idValid, setIdValid] = useState(false);
 
   const [numGuests, setNumGuests] = useState(1);
   // const nightStayRadio = useRef(0);
@@ -51,12 +53,13 @@ const Form = () => {
   const onRadioButtonUpdate = (value: number) => {
     const wrapperFunction = () => {
       setRadioButton(value);
+      console.log(refFormData.current);
     };
     return wrapperFunction;
   };
 
-  let refFormData = useRef<any>(null);
-  let refSignature = useRef<any>(null); // TODO: enforce better typing?
+  let refFormData = useRef<any>({});
+  let refSignature = useRef<any>({});
 
   // let is_valid =
   //   (refFormData.current?.addr_valid &&
@@ -64,7 +67,9 @@ const Form = () => {
   //     refFormData.current?.stay_valid) ||
   //   radioButton == 1;
 
-  let is_valid = sigValid && confirmValid && stayValid;
+  let is_valid =
+    (sigValid && confirmValid && stayValid && addrValid && idValid) ||
+    (radioButton === 1 && sigValid && confirmValid && stayValid);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -73,9 +78,11 @@ const Form = () => {
     }
 
     useEffect(() => {
-      is_valid = sigValid && confirmValid && stayValid;
+      is_valid =
+        (sigValid && confirmValid && stayValid && addrValid && idValid) ||
+        (radioButton === 1 && sigValid && confirmValid && stayValid);
     }),
-      [sigValid, confirmValid, stayValid];
+      [sigValid, confirmValid, stayValid, addrValid, idValid];
 
     // TODO: validate that signature is OK
     data = { ...data, ...refFormData.current };
@@ -138,7 +145,7 @@ const Form = () => {
                   disp_heading={"Address"}
                   disp_string={["Street", "City", "Zip", "Country"]}
                   country_choises={countriesEN}
-                  onBlur={parentIncrease}
+                  onValid={setAddrValid}
                   ref={refFormData}
                 />
               )}
@@ -152,7 +159,7 @@ const Form = () => {
                     "Issuing Country",
                   ]}
                   country_choises={countriesEN}
-                  onBlur={parentIncrease}
+                  onValid={setIdValid}
                   ref={refFormData}
                 />
               )}

@@ -12,25 +12,59 @@ interface FormIDProps {
   disp_string: string[];
   disp_heading: string;
   country_choises: string[];
-  onBlur?: any;
+  onValid?: any;
 }
 
 const schema = z.object({
   id_valid: z.boolean(),
-  id_number: z.string().min(5),
+  id_number: z.string().min(5, { message: "Invalid ID" }),
   id_issue_date: z.date(),
   id_institution: z.string(),
-  id_country: z.string().refine((value: any) => value !== "Choose...", {
-    message: "Select a country",
-  }),
+  id_country: z
+    .string()
+    .min(1, { message: "Select a country" })
+    .refine((value: any) => value !== "Choose...", {
+      message: "Select a country",
+    }),
 });
 
 export type FormIDRef = z.infer<typeof schema>; // this should be used as the ref
 
 export const FormID = forwardRef<any, FormIDProps>(
-  ({ disp_string, disp_heading, country_choises, onBlur }, ref: any) => {
+  ({ disp_string, disp_heading, country_choises, onValid }, ref: any) => {
     useEffect(() => {
+      if (ref.current) {
+        if ("id_valid" in ref.current) {
+          setValue("id_valid", ref.current.id_valid);
+          trigger("id_valid");
+        } else {
+          setValue("id_valid", false);
+          trigger("id_valid");
+        }
+        if ("id_number" in ref.current) {
+          setValue("id_number", ref.current.id_number);
+          trigger("id_number");
+        }
+        if ("id_issue_date" in ref.current) {
+          setValue("id_issue_date", ref.current.id_issue_date);
+          trigger("id_issue_date");
+          setStartDate(ref.current.id_issue_date);
+        }
+        if ("id_institution" in ref.current) {
+          setValue("id_institution", ref.current.id_institution);
+          trigger("id_institution");
+        }
+        if ("id_country" in ref.current) {
+          setValue("id_country", ref.current.id_country);
+          trigger("id_country");
+        }
+        return;
+      }
       setValue("id_valid", false); // initialize original value
+      ref.current = {
+        ...ref.current,
+        id_valid: false,
+      };
     }, []);
 
     const [startDate, setStartDate] = useState<Date | null>(null);
@@ -41,6 +75,35 @@ export const FormID = forwardRef<any, FormIDProps>(
       trigger,
       setValue,
     } = useForm<FormIDRef>({ resolver: zodResolver(schema) });
+
+    useEffect(() => {
+      console.log("addr_valid_changed");
+      console.log(isValid);
+      ref.current = {
+        ...ref.current,
+        id_valid: isValid,
+      };
+      onValid(isValid);
+    }, [isValid]);
+
+    const set_placeholder = (
+      field_name: any,
+      ref: any,
+      default_value?: any
+    ) => {
+      let fieldExists = false;
+
+      if (ref.current) {
+        // Check if the field exists in ref.current
+        fieldExists = field_name.toString() in ref.current;
+      }
+
+      if (fieldExists) {
+        return ref.current[field_name];
+      } else {
+        return default_value ? default_value : "";
+      }
+    };
 
     return (
       <>
@@ -65,10 +128,6 @@ export const FormID = forwardRef<any, FormIDProps>(
                         id_number: e.target.value,
                       })
                     : null;
-                  ref
-                    ? (ref.current = { ...ref.current, id_valid: isValid })
-                    : null;
-                  onBlur();
                 }}
               />
             </div>
@@ -89,25 +148,28 @@ export const FormID = forwardRef<any, FormIDProps>(
                 selected={startDate}
                 onChange={(date: Date | null) => {
                   setStartDate(date);
-                  console.log(date);
                   date ? setValue("id_issue_date", date) : null;
-                  ref
-                    ? (ref.current = {
-                        ...ref.current,
-                        id_issue_date: date,
-                      })
-                    : null;
-                  ref
-                    ? (ref.current = { ...ref.current, id_valid: isValid })
-                    : null;
+                  trigger("id_issue_date");
+                  ref.current = {
+                    ...ref.current,
+                    id_issue_date: date,
+                  };
                 }}
                 className="form-control center-all full-width"
                 placeholderText="MM-DD-YYYY"
                 aria-label="Select a date"
                 aria-describedby="datepicker"
+                onBlur={() => {
+                  trigger("id_issue_date");
+                }}
               />
             </div>
           </div>
+          {errors.id_issue_date && (
+            <p className="text-danger floating-text-top">
+              {errors.id_issue_date.message}
+            </p>
+          )}
 
           <div>
             <div className="input-group mb-4">
@@ -127,10 +189,6 @@ export const FormID = forwardRef<any, FormIDProps>(
                         id_institution: e.target.value,
                       })
                     : null;
-                  ref
-                    ? (ref.current = { ...ref.current, id_valid: isValid })
-                    : null;
-                  onBlur();
                 }}
               />
             </div>
@@ -152,19 +210,14 @@ export const FormID = forwardRef<any, FormIDProps>(
               onBlur={(e) => {
                 trigger("id_country");
                 ref
-                  ? (ref.current = { ...ref.current, id_valid: isValid })
-                  : false;
-                ref
                   ? (ref.current = {
                       ...ref.current,
                       id_country: e.target.value,
                     })
                   : null;
-                console.log(e.target.value);
-                onBlur();
               }}
             >
-              <option selected>Choose...</option>
+              <option selected>{set_placeholder("id_country", ref)}</option>
               {country_choises.map((option) => (
                 <option value={option}>{option}</option>
               ))}
