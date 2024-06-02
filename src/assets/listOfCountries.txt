@@ -54,7 +54,6 @@ El Salvador
 Equatorial Guinea
 Eritrea
 Estonia
-Eswatini
 Ethiopia
 Fiji
 Finland
@@ -120,7 +119,7 @@ Mongolia
 Montenegro
 Morocco
 Mozambique
-Myanmar
+Myanmar, {Burma}
 Namibia
 Nauru
 Nepal
@@ -133,7 +132,6 @@ Norway
 Oman
 Pakistan
 Palau
-Palestine
 Panama
 Papua New Guinea
 Paraguay
@@ -167,6 +165,7 @@ Spain
 Sri Lanka
 Sudan
 Suriname
+Swaziland
 Sweden
 Switzerland
 Syria

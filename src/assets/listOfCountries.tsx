@@ -1,4 +1,4 @@
-const countriesEN = [
+const countriesEN: string[] = [
   "Afghanistan",
   "Albania",
   "Algeria",
@@ -55,7 +55,6 @@ const countriesEN = [
   "Equatorial Guinea",
   "Eritrea",
   "Estonia",
-  "Eswatini",
   "Ethiopia",
   "Fiji",
   "Finland",
@@ -121,7 +120,7 @@ const countriesEN = [
   "Montenegro",
   "Morocco",
   "Mozambique",
-  "Myanmar",
+  "Myanmar, {Burma}",
   "Namibia",
   "Nauru",
   "Nepal",
@@ -134,7 +133,6 @@ const countriesEN = [
   "Oman",
   "Pakistan",
   "Palau",
-  "Palestine",
   "Panama",
   "Papua New Guinea",
   "Paraguay",
@@ -168,6 +166,7 @@ const countriesEN = [
   "Sri Lanka",
   "Sudan",
   "Suriname",
+  "Swaziland",
   "Sweden",
   "Switzerland",
   "Syria",

@@ -35,6 +35,45 @@ const Form = () => {
   const [stayValid, setStayValid] = useState(false);
   const [addrValid, setAddrValid] = useState(false);
   const [idValid, setIdValid] = useState(false);
+  const [personValid, setPersonValid] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [personValidOverall, setPersonValidOverall] = useState(false);
+
+  const setPersonValidID = (id: number, value: boolean) => {
+    console.log(personValid);
+    let tempValue = [...personValid]; // actually creates a copy
+    tempValue[id] = value;
+    console.log(personValid);
+    setPersonValid(tempValue);
+    console.log("Person valid ID");
+    console.log(tempValue);
+  };
+
+  function areAllTrueExcludingIndex(array: boolean[], index: number): boolean {
+    // Ensure the index is within the bounds of the array
+    if (index < 0 || index > array.length) {
+      throw new Error("Index is out of bounds");
+    }
+
+    for (let i = 0; i < index; i++) {
+      if (!array[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  // Example usage:
+  const booleanArray = [true, true, true, false, true];
+  const index = 3;
+
+  const result = areAllTrueExcludingIndex(booleanArray, index);
+  console.log(result); // Output: true
 
   const [numGuests, setNumGuests] = useState(1);
   // const nightStayRadio = useRef(0);
@@ -68,15 +107,40 @@ const Form = () => {
   //   radioButton == 1;
 
   let is_valid =
-    (sigValid && confirmValid && stayValid && addrValid && idValid) ||
+    (sigValid &&
+      confirmValid &&
+      stayValid &&
+      addrValid &&
+      idValid &&
+      personValidOverall) ||
     (radioButton === 1 && sigValid && confirmValid && stayValid);
 
   useEffect(() => {
-    is_valid =
-      (sigValid && confirmValid && stayValid && addrValid && idValid) ||
-      (radioButton === 1 && sigValid && confirmValid && stayValid);
+    const isTrue = areAllTrueExcludingIndex(personValid, numGuests);
+    setPersonValidOverall(isTrue);
   }),
-    [sigValid, confirmValid, stayValid, addrValid, idValid];
+    [personValid, numGuests];
+
+  useEffect(() => {
+    is_valid =
+      (sigValid &&
+        confirmValid &&
+        stayValid &&
+        addrValid &&
+        idValid &&
+        personValidOverall) ||
+      (radioButton === 1 && sigValid && confirmValid && stayValid);
+    console.log("person valids USEFFECT");
+    console.log(personValid);
+    console.log(numGuests);
+    console.log(sigValid);
+    console.log(confirmValid);
+    console.log(stayValid);
+    console.log(addrValid);
+    console.log(idValid);
+    console.log(areAllTrueExcludingIndex(personValid, numGuests));
+  }),
+    [sigValid, confirmValid, stayValid, addrValid, idValid, personValidOverall];
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -129,7 +193,8 @@ const Form = () => {
                       id={index}
                       disp_heading={"Info guest" + " " + item}
                       disp_country_options={countriesEN}
-                      disp_labels={[
+                      onValid={setPersonValidID}
+                      disp_string={[
                         "First name",
                         "Last name",
                         "Country of citizenship",

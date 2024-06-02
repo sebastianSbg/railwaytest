@@ -8,38 +8,94 @@ import DatePicker from "react-datepicker";
 
 interface FormPersonProps {
   disp_heading: string;
-  disp_labels: string[];
+  disp_string: string[];
   disp_sex_options: string[];
   disp_country_options: string[];
   id?: number;
+  onValid?: any;
+  onValidArray?: any;
 }
 
 const schema = z.object({
   person_valid: z.boolean(),
-  first_name: z.string().min(3),
-  last_namme: z.string().min(3),
-  birth_date: z.date(),
-  country: z.string().min(3, { message: "title must be at least 3" }),
-  sex: z.string().min(3),
+  person_first_name: z.string().min(2, { message: "Invalid first name." }),
+  person_last_name: z.string().min(2, { message: "Invalid last name." }),
+  person_country: z.string().min(1, { message: "Please select a country." }),
+  person_sex: z.string().min(1, { message: "Please select a sex." }),
+  person_birth_date: z.date({ message: "Please select a birth date." }),
 });
 
 export type FormPersonRef = z.infer<typeof schema>; // this is like an interface
 
 export const FormPerson = forwardRef<any, FormPersonProps>(
   (
-    { disp_heading, disp_labels, disp_country_options, disp_sex_options, id },
+    {
+      disp_heading,
+      disp_string,
+      disp_country_options,
+      disp_sex_options,
+      id,
+      onValid,
+      onValidArray,
+    },
     ref: any
   ) => {
     useEffect(() => {
+      if (ref.current) {
+        console.log("useEFFECT");
+        console.log(ref.current);
+        console.log("person_birth_date_" + id);
+        if ("person_valid_" + id in ref.current) {
+          setValue("person_valid", ref.current["person_valid_" + id]);
+          trigger("person_valid");
+        } else {
+          setValue("person_valid", false);
+          trigger("person_valid");
+          ref ? (ref.current["person_valid_" + id] = false) : null;
+        }
+        if ("person_first_name_" + id in ref.current) {
+          setValue("person_first_name", ref.current["person_first_name_" + id]);
+          trigger("person_first_name");
+          console.log("person_first_name_valid");
+        }
+        if ("person_last_name_" + id in ref.current) {
+          setValue("person_last_name", ref.current["person_last_name_" + id]);
+          trigger("person_last_name");
+        }
+        if ("person_country_" + id in ref.current) {
+          setValue("person_country", ref.current["person_country_" + id]);
+          trigger("person_country");
+        }
+        if ("person_sex_" + id in ref.current) {
+          setValue("person_sex", ref.current["person_sex_" + id]);
+          trigger("person_sex");
+        }
+        if ("person_birth_date_" + id in ref.current) {
+          setValue("person_birth_date", ref.current["person_birth_date_" + id]);
+          trigger("person_birth_date");
+          setStartDate(ref.current["person_birth_date_" + id]);
+          console.log("Person birth date " + id);
+        }
+        return;
+      }
       setValue("person_valid", false); // initialize original value
+      ref ? (ref.current["person_valid_" + id] = false) : null;
     }, []);
 
     const {
       register,
-      formState: { errors },
+      formState: { errors, isValid },
       trigger,
       setValue,
     } = useForm<FormPersonRef>({ resolver: zodResolver(schema) });
+
+    useEffect(() => {
+      console.log("person_valid_changed");
+      console.log(isValid);
+      console.log(ref.current);
+      ref ? (ref.current["person_valid_" + id] = isValid) : null;
+      onValid ? onValid(id, isValid) : null;
+    }, [isValid]);
 
     const [startDate, setStartDate] = useState<Date | null>(null);
 
@@ -69,113 +125,141 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
           <div>
             <div className="input-group mb-4">
               <span className="input-group-text" id="basic-addon1">
-                {disp_labels[0]}
+                {disp_string[0]}
               </span>
               {/* <label htmlFor="last_name" className="form-label"></label> */}
               <input
-                {...register("first_name")}
+                {...register("person_first_name")}
                 id={"person_first_name_" + id}
                 type="text"
                 className="form-control"
                 placeholder={set_placeholder("person_first_name_" + id, ref)}
                 onBlur={(e) => {
-                  trigger("first_name");
+                  trigger("person_first_name");
                   ref
                     ? (ref.current["person_first_name_" + id] = e.target.value)
                     : null;
                 }}
               />
             </div>
-            {errors.first_name && (
-              <p className="text-danger">{errors.first_name.message}</p>
+            {errors.person_first_name && (
+              <p className="text-danger floating-text-top">
+                {errors.person_first_name.message}
+              </p>
             )}
           </div>
           <div>
             <div className="input-group mb-4">
               <span className="input-group-text" id="basic-addon1">
-                {disp_labels[1]}
+                {disp_string[1]}
               </span>
               {/* <label htmlFor="last_name" className="form-label"></label> */}
               <input
-                {...register("last_namme")}
+                {...register("person_last_name")}
                 id={"person_last_name_" + id}
                 type="text"
                 placeholder={set_placeholder("person_last_name_" + id, ref)}
                 className="form-control"
                 onBlur={(e) => {
-                  trigger("last_namme");
+                  trigger("person_last_name");
                   ref
                     ? (ref.current["person_last_name_" + id] = e.target.value)
                     : null;
                 }}
               />
             </div>
-            {errors.last_namme && (
-              <p className="text-danger">{errors.last_namme.message}</p>
+            {errors.person_last_name && (
+              <p className="text-danger floating-text-top">
+                {errors.person_last_name.message}
+              </p>
             )}
           </div>
           <div className="input-group mb-4">
             <span className="input-group-text" id="basic-addon1">
-              {disp_labels[2]}
+              {disp_string[2]}
             </span>
             <select
               className="form-select"
-              {...register("country")}
-              id={"person_country_" + id}
+              {...register("person_country")}
+              id="person_country"
               onBlur={(e) => {
-                trigger("country");
+                trigger("person_country");
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
                   : null;
               }}
             >
-              <option selected>Choose...</option>
+              <option selected>
+                {set_placeholder("person_country_" + id, ref)}
+              </option>
               {disp_country_options.map((option) => (
                 <option value={option}>{option}</option>
               ))}
             </select>
           </div>
+
+          {errors.person_country && (
+            <p className="text-danger floating-text-top">
+              {errors.person_country.message}
+            </p>
+          )}
+
           <div className="input-group mb-4">
             <span className="input-group-text" id="basic-addon1">
-              {disp_labels[3]}
+              {disp_string[3]}
             </span>
             <select
               className="form-select"
-              {...register("sex")}
-              id={"person_sex_" + id}
+              {...register("person_sex")}
+              id="person_sex"
               onBlur={(e) => {
-                trigger("sex");
+                trigger("person_sex");
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
               }}
             >
-              <option selected>Choose...</option>
+              <option selected>
+                {set_placeholder("person_sex_" + id, ref)}
+              </option>
               {disp_sex_options.map((option) => (
                 <option value={option}>{option}</option>
               ))}
             </select>
           </div>
+          {errors.person_sex && (
+            <p className="text-danger floating-text-top">
+              {errors.person_sex.message}
+            </p>
+          )}
 
           <div className="input-group mb-4 full-width">
             <span className="input-group-text">
               <Calendar />
             </span>
-            <span className="input-group-text">{disp_labels[4]}</span>
+            <span className="input-group-text">{disp_string[4]}</span>
             <div className="form-control">
               <DatePicker
                 selected={startDate}
                 onChange={(date: Date | null) => {
                   setStartDate(date);
-                  console.log(date);
-                  date ? setValue("birth_date", date) : null;
+                  date ? setValue("person_birth_date", date) : null;
+                  trigger("person_birth_date");
                   ref ? (ref.current["person_birth_date_" + id] = date) : null;
                 }}
                 className="form-control center-all full-width"
                 placeholderText="MM-DD-YYYY"
                 aria-label="Select a date"
                 aria-describedby="datepicker"
+                onBlur={() => {
+                  trigger("person_birth_date");
+                }}
               />
             </div>
           </div>
+          {errors.person_birth_date && (
+            <p className="text-danger floating-text-top">
+              {errors.person_birth_date.message}
+            </p>
+          )}
         </div>
       </>
     );
