@@ -13,13 +13,21 @@ interface FormPersonProps {
   disp_country_options: string[];
   id?: number;
   onValid?: any;
-  onValidArray?: any;
 }
+
+// Custom function to check for the presence of numbers in a string
+const noNumbers = (value: string) => !/\d/.test(value);
 
 const schema = z.object({
   person_valid: z.boolean(),
-  person_first_name: z.string().min(2, { message: "Invalid first name." }),
-  person_last_name: z.string().min(2, { message: "Invalid last name." }),
+  person_first_name: z
+    .string()
+    .min(2, { message: "Invalid first name." })
+    .refine(noNumbers, { message: "First name should not contain numbers." }),
+  person_last_name: z
+    .string()
+    .min(2, { message: "Invalid last name." })
+    .refine(noNumbers, { message: "Last name should not contain numbers." }),
   person_country: z.string().min(1, { message: "Please select a country." }),
   person_sex: z.string().min(1, { message: "Please select a sex." }),
   person_birth_date: z.date({ message: "Please select a birth date." }),
@@ -36,7 +44,6 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
       disp_sex_options,
       id,
       onValid,
-      onValidArray,
     },
     ref: any
   ) => {

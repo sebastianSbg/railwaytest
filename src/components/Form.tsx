@@ -122,6 +122,14 @@ const Form = () => {
     [personValid, numGuests];
 
   useEffect(() => {
+    refFormData.current = {
+      ...refFormData.current,
+      confirm_valid: confirmValid,
+    };
+  }),
+    [confirmValid];
+
+  useEffect(() => {
     is_valid =
       (sigValid &&
         confirmValid &&
