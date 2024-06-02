@@ -1,4 +1,4 @@
-import { useRef, useState, forwardRef, useEffect } from "react";
+import { useState, forwardRef, useEffect } from "react";
 import ScrollableDropdown from "./ScrollableDropdown";
 import "../App.css";
 

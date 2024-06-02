@@ -43,12 +43,12 @@ const Form = () => {
   // const [allFormValid, setAllFormValid] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const [numRender, setNumRender] = useState(0); // used as callback from children to update parent
+  // const [numRender, setNumRender] = useState(0); // used as callback from children to update parent
 
-  // increment counter everytime parent is rerendered by children
-  const parentIncrease = () => {
-    setNumRender(numRender + 1);
-  };
+  // // increment counter everytime parent is rerendered by children
+  // const parentIncrease = () => {
+  //   setNumRender(numRender + 1);
+  // };
 
   const onRadioButtonUpdate = (value: number) => {
     const wrapperFunction = () => {
