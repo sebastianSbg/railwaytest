@@ -35,7 +35,7 @@ const Form = () => {
   const [stayValid, setStayValid] = useState(false);
 
   const [numGuests, setNumGuests] = useState(1);
-  const nightStayRadio = useRef(0);
+  // const nightStayRadio = useRef(0);
   const [radioButton, setRadioButton] = useState(0);
   const [_, setLanguage] = useState("English");
   // const [allFormValid, setAllFormValid] = useState(0);
