@@ -71,18 +71,18 @@ const Form = () => {
     (sigValid && confirmValid && stayValid && addrValid && idValid) ||
     (radioButton === 1 && sigValid && confirmValid && stayValid);
 
+  useEffect(() => {
+    is_valid =
+      (sigValid && confirmValid && stayValid && addrValid && idValid) ||
+      (radioButton === 1 && sigValid && confirmValid && stayValid);
+  }),
+    [sigValid, confirmValid, stayValid, addrValid, idValid];
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!is_valid) {
       return;
     }
-
-    useEffect(() => {
-      is_valid =
-        (sigValid && confirmValid && stayValid && addrValid && idValid) ||
-        (radioButton === 1 && sigValid && confirmValid && stayValid);
-    }),
-      [sigValid, confirmValid, stayValid, addrValid, idValid];
 
     // TODO: validate that signature is OK
     data = { ...data, ...refFormData.current };
