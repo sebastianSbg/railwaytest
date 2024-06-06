@@ -29,6 +29,9 @@ let data: Data = {};
 
 const Form = () => {
   const LOCKBOX_CODE = import.meta.env.VITE_LOCKBOX_CODE;
+  const AIRBNB_ID = import.meta.env.VITE_AIRBNB_ID;
+  const AIRBNB_NAME = import.meta.env.VITE_AIRBNB_NAME;
+  const TARGET_SERVER = import.meta.env.VITE_TARGET_SERVER;
 
   const [sigValid, setSigValid] = useState(false);
   const [confirmValid, setConfirmValid] = useState(false);
@@ -159,13 +162,12 @@ const Form = () => {
     // TODO: validate that signature is OK
     data = { ...data, ...refFormData.current };
     data = { ...data, signature: refSignature.current.getSVG() };
+    data = { ...data, signature_date: new Date() };
+    data = { ...data, abnb_id: AIRBNB_ID, abnb_name: AIRBNB_NAME };
     console.log(data);
 
     axios
-      .post(
-        "https://formbackend-production-6eb5.up.railway.app/store/products/",
-        data
-      )
+      .post(TARGET_SERVER, data)
       .then((response) => {
         console.log("Form submitted successfully:", response.data);
         setFormSubmitted(true);
