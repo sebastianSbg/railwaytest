@@ -84,6 +84,7 @@ const Form = () => {
   const [_, setLanguage] = useState("English");
   // const [allFormValid, setAllFormValid] = useState(0);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // const [numRender, setNumRender] = useState(0); // used as callback from children to update parent
 
@@ -159,6 +160,8 @@ const Form = () => {
       return;
     }
 
+    setIsSubmitting(true); // Set to true to prevent further clicks during submission
+
     // TODO: validate that signature is OK
     data = { ...data, ...refFormData.current };
     data = { ...data, signature: refSignature.current.getSVG() };
@@ -175,6 +178,9 @@ const Form = () => {
       .catch((error) => {
         console.error("Error submitting form:", error);
         // Handle error (e.g., show an error message to the user)
+      })
+      .finally(() => {
+        setIsSubmitting(false); // Reset submitting state regardless of success or failure
       });
   };
 
@@ -272,8 +278,11 @@ const Form = () => {
                 </div>
 
                 <div className="mt-4 mb-2 center-text">
-                  <button disabled={!is_valid} className="btn btn-primary">
-                    Submit
+                  <button
+                    disabled={!is_valid || formSubmitted || isSubmitting}
+                    className="btn btn-primary"
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit"}
                   </button>
                   {!is_valid && (
                     <p className="text-danger">
@@ -289,7 +298,7 @@ const Form = () => {
       {formSubmitted && (
         <>
           <div className="text-center mt-5">
-            <h1 mb-5>Thank you for submitting the questionaire!</h1>
+            <h1 mb-5>Thank you for submitting the form!</h1>
             <h2 mb-5>The lock-box code is: {LOCKBOX_CODE}</h2>
           </div>
         </>
