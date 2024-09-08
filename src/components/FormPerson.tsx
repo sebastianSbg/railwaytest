@@ -196,7 +196,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_country")}
               id="person_country"
-              onChange={async (e) => {
+              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
                   : null;
@@ -227,7 +227,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_sex")}
               id="person_sex"
-              onChange={async (e) => {
+              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
                 await sleep(300);
                 trigger("person_sex");
