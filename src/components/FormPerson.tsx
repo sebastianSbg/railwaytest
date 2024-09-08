@@ -149,10 +149,13 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 className="form-control"
                 placeholder={set_placeholder("person_first_name_" + id, ref)}
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  trigger("person_first_name");
+                  // trigger("person_first_name");
                   ref
                     ? (ref.current["person_first_name_" + id] = e.target.value)
                     : null;
+                }}
+                onBlur={() => {
+                  trigger("person_first_name");
                 }}
               />
             </div>
