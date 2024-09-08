@@ -79,6 +79,7 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
     useEffect(() => {
       console.log("addr_valid_changed");
       console.log(isValid);
+
       ref.current = {
         ...ref.current,
         addr_valid: isValid,
@@ -120,14 +121,15 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 id="steet"
                 type="text"
                 className="form-control"
-                onChange={(e) => {
-                  trigger("addr_street");
+                onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   ref
                     ? (ref.current = {
                         ...ref.current,
                         addr_street: e.target.value,
                       })
                     : null;
+                  setValue("addr_street", ref.current["addr_street"]);
+                  trigger("addr_street");
                 }}
               />
             </div>
@@ -149,14 +151,16 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 type="text"
                 className="form-control"
                 placeholder={set_placeholder("addr_city", ref)}
-                onChange={(e) => {
-                  trigger("addr_city");
+                onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   ref
                     ? (ref.current = {
                         ...ref.current,
                         addr_city: e.target.value,
                       })
                     : null;
+
+                  setValue("addr_city", ref.current["addr_city"]);
+                  trigger("addr_city");
                 }}
               />
             </div>
@@ -178,14 +182,15 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 type="number"
                 className="form-control"
                 placeholder={set_placeholder("addr_zip", ref)}
-                onChange={(e) => {
-                  trigger("addr_zip");
+                onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   ref
                     ? (ref.current = {
                         ...ref.current,
                         addr_zip: e.target.value,
                       })
                     : null;
+                  setValue("addr_zip", ref.current["addr_zip"]);
+                  trigger("addr_zip");
                 }}
               />
             </div>
@@ -204,14 +209,15 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
               className="form-select"
               {...register("addr_country")}
               id="addr_country"
-              onBlur={(e) => {
-                trigger("addr_country");
+              onChange={(e) => {
                 ref
                   ? (ref.current = {
                       ...ref.current,
                       addr_country: e.target.value,
                     })
                   : null;
+                setValue("addr_country", ref.current["addr_country"]);
+                trigger("addr_country");
               }}
             >
               <option selected>{set_placeholder("addr_country", ref)}</option>

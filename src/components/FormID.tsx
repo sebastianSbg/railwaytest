@@ -77,7 +77,7 @@ export const FormID = forwardRef<any, FormIDProps>(
     } = useForm<FormIDRef>({ resolver: zodResolver(schema) });
 
     useEffect(() => {
-      console.log("addr_valid_changed");
+      console.log("id_valid_changed");
       console.log(isValid);
       ref.current = {
         ...ref.current,
@@ -120,14 +120,15 @@ export const FormID = forwardRef<any, FormIDProps>(
                 id="id_number"
                 type="text"
                 className="form-control"
-                onChange={(e) => {
-                  trigger("id_number");
+                onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   ref
                     ? (ref.current = {
                         ...ref.current,
                         id_number: e.target.value,
                       })
                     : null;
+                  setValue("id_number", ref.current["id_number"]);
+                  trigger("id_number");
                 }}
               />
             </div>
@@ -181,14 +182,15 @@ export const FormID = forwardRef<any, FormIDProps>(
                 id="id_institution"
                 type="text"
                 className="form-control"
-                onChange={(e) => {
-                  trigger("id_institution");
+                onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   ref
                     ? (ref.current = {
                         ...ref.current,
                         id_institution: e.target.value,
                       })
                     : null;
+                  setValue("id_institution", ref.current["id_institution"]);
+                  trigger("id_institution");
                 }}
               />
             </div>
@@ -207,14 +209,16 @@ export const FormID = forwardRef<any, FormIDProps>(
               className="form-select"
               {...register("id_country")}
               id="id_country"
-              onBlur={(e) => {
-                trigger("id_country");
+              onChange={(e) => {
                 ref
                   ? (ref.current = {
                       ...ref.current,
                       id_country: e.target.value,
                     })
                   : null;
+
+                setValue("id_country", ref.current["id_country"]);
+                trigger("id_country");
               }}
             >
               <option selected>{set_placeholder("id_country", ref)}</option>

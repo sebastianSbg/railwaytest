@@ -48,13 +48,13 @@ const Form = () => {
   const [personValidOverall, setPersonValidOverall] = useState(false);
 
   const setPersonValidID = (id: number, value: boolean) => {
-    console.log(personValid);
+    // console.log(personValid);
     let tempValue = [...personValid]; // actually creates a copy
     tempValue[id] = value;
-    console.log(personValid);
+    // console.log(personValid);
     setPersonValid(tempValue);
-    console.log("Person valid ID");
-    console.log(tempValue);
+    // console.log("Person valid ID");
+    // console.log(tempValue);
   };
 
   function areAllTrueExcludingIndex(array: boolean[], index: number): boolean {
@@ -76,7 +76,7 @@ const Form = () => {
   const index = 3;
 
   const result = areAllTrueExcludingIndex(booleanArray, index);
-  console.log(result); // Output: true
+  // console.log(result); // Output: true
 
   const [numGuests, setNumGuests] = useState(1);
   // const nightStayRadio = useRef(0);
@@ -96,7 +96,7 @@ const Form = () => {
   const onRadioButtonUpdate = (value: number) => {
     const wrapperFunction = () => {
       setRadioButton(value);
-      console.log(refFormData.current);
+      // console.log(refFormData.current);
     };
     return wrapperFunction;
   };
@@ -142,15 +142,15 @@ const Form = () => {
         idValid &&
         personValidOverall) ||
       (radioButton === 1 && sigValid && confirmValid && stayValid);
-    console.log("person valids USEFFECT");
-    console.log(personValid);
-    console.log(numGuests);
-    console.log(sigValid);
-    console.log(confirmValid);
-    console.log(stayValid);
-    console.log(addrValid);
-    console.log(idValid);
-    console.log(areAllTrueExcludingIndex(personValid, numGuests));
+    // console.log("person valids USEFFECT");
+    // console.log(personValid);
+    // console.log(numGuests);
+    // console.log(sigValid);
+    // console.log(confirmValid);
+    // console.log(stayValid);
+    // console.log(addrValid);
+    // console.log(idValid);
+    // console.log(areAllTrueExcludingIndex(personValid, numGuests));
   }),
     [sigValid, confirmValid, stayValid, addrValid, idValid, personValidOverall];
 
@@ -172,11 +172,11 @@ const Form = () => {
     axios
       .post(TARGET_SERVER, data)
       .then((response) => {
-        console.log("Form submitted successfully:", response.data);
+        // console.log("Form submitted successfully:", response.data);
         setFormSubmitted(true);
       })
       .catch((error) => {
-        console.error("Error submitting form:", error);
+        // console.error("Error submitting form:", error);
         // Handle error (e.g., show an error message to the user)
       })
       .finally(() => {

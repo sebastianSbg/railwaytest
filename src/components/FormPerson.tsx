@@ -49,9 +49,9 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
   ) => {
     useEffect(() => {
       if (ref.current) {
-        console.log("useEFFECT");
-        console.log(ref.current);
-        console.log("person_birth_date_" + id);
+        // console.log("useEFFECT");
+        // console.log(ref.current);
+        // console.log("person_birth_date_" + id);
         if ("person_valid_" + id in ref.current) {
           setValue("person_valid", ref.current["person_valid_" + id]);
           trigger("person_valid");
@@ -63,7 +63,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
         if ("person_first_name_" + id in ref.current) {
           setValue("person_first_name", ref.current["person_first_name_" + id]);
           trigger("person_first_name");
-          console.log("person_first_name_valid");
+          // console.log("person_first_name_valid");
         }
         if ("person_last_name_" + id in ref.current) {
           setValue("person_last_name", ref.current["person_last_name_" + id]);
@@ -81,7 +81,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
           setValue("person_birth_date", ref.current["person_birth_date_" + id]);
           trigger("person_birth_date");
           setStartDate(ref.current["person_birth_date_" + id]);
-          console.log("Person birth date " + id);
+          // console.log("Person birth date " + id);
         }
         return;
       }
@@ -102,7 +102,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
     useEffect(() => {
       console.log("person_valid_changed");
       console.log(isValid);
-      console.log(ref.current);
+      // console.log(ref.current);
       ref ? (ref.current["person_valid_" + id] = isValid) : null;
       onValid ? onValid(id, isValid) : null;
     }, [isValid]);
@@ -149,7 +149,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                   ref
                     ? (ref.current["person_first_name_" + id] = e.target.value)
                     : null;
-                  console.log("Name input");
+                  // console.log("Name input");
                   await sleep(300);
                   trigger("person_first_name");
                 }}
@@ -177,7 +177,10 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                   ref
                     ? (ref.current["person_last_name_" + id] = e.target.value)
                     : null;
-                  await sleep(300);
+                  setValue(
+                    "person_last_name",
+                    ref.current["person_last_name_" + id]
+                  );
                   trigger("person_last_name");
                 }}
               />
@@ -199,17 +202,13 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 validate: (value) =>
                   value !== "" || "Please select a valid country.", // Ensures placeholder is not treated as valid
               })}
-              id="person_country"
-              onBlur={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+              id={"person_country_" + id}
+              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
                 // Update the ref with the selected value
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
                   : null;
-
-                // // Optional delay before triggering validation
-                // await sleep(300);
-
-                // Trigger validation for the person_country field
+                setValue("person_country", ref.current["person_country_" + id]);
                 trigger("person_country");
               }}
             >
@@ -236,9 +235,10 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
             <select
               className="form-select"
               {...register("person_sex")}
-              id="person_sex"
-              onBlur={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+              id={"person_sex_" + id}
+              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
+                setValue("person_sex", ref.current["person_sex_" + id]);
                 trigger("person_sex");
               }}
             >
