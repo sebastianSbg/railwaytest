@@ -153,9 +153,6 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                   await sleep(300);
                   trigger("person_first_name");
                 }}
-                onBlur={() => {
-                  trigger("person_first_name");
-                }}
               />
             </div>
             {errors.person_first_name && (
@@ -176,10 +173,11 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 type="text"
                 placeholder={set_placeholder("person_last_name_" + id, ref)}
                 className="form-control"
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   ref
                     ? (ref.current["person_last_name_" + id] = e.target.value)
                     : null;
+                  await sleep(300);
                   trigger("person_last_name");
                 }}
               />
@@ -198,11 +196,12 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_country")}
               id="person_country"
-              onBlur={(e) => {
-                trigger("person_country");
+              onChange={async (e) => {
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
                   : null;
+                await sleep(300);
+                trigger("person_country");
               }}
             >
               <option selected>
@@ -228,9 +227,10 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_sex")}
               id="person_sex"
-              onBlur={(e) => {
-                trigger("person_sex");
+              onChange={async (e) => {
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
+                await sleep(300);
+                trigger("person_sex");
               }}
             >
               <option selected>
@@ -255,17 +255,19 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
             <div className="form-control">
               <DatePicker
                 selected={startDate}
-                onChange={(date: Date | null) => {
+                onChange={async (date: Date | null) => {
                   setStartDate(date);
                   date ? setValue("person_birth_date", date) : null;
-                  trigger("person_birth_date");
                   ref ? (ref.current["person_birth_date_" + id] = date) : null;
+                  await sleep(300);
+                  trigger("person_birth_date");
                 }}
                 className="form-control center-all full-width"
                 placeholderText="MM-DD-YYYY"
                 aria-label="Select a date"
                 aria-describedby="datepicker"
-                onBlur={() => {
+                onBlur={async () => {
+                  await sleep(300);
                   trigger("person_birth_date");
                 }}
               />
