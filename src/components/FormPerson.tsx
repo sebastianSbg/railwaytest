@@ -196,25 +196,12 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_country")}
               id="person_country"
-              onBlur={(e) => {
+              onChange={async (e) => {
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
                   : null;
+                await sleep(300);
                 trigger("person_country");
-              }}
-              onChange={() => {
-                console.log("change of country");
-                // ref
-                //   ? (ref.current["person_country_" + id] = e.target.value)
-                //   : null;
-                // trigger("person_country");
-              }}
-              onInput={() => {
-                console.log("input of country");
-                // ref
-                //   ? (ref.current["person_country_" + id] = e.target.value)
-                //   : null;
-                // trigger("person_country");
               }}
             >
               <option selected>
