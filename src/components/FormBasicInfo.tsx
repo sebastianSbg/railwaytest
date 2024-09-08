@@ -33,7 +33,8 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
         </p>
         <p className="mb-4">
           The lockbox code will be provided after on the next page, after the
-          form submission.
+          form submission. Note: the form does not support autofill. Please TYPE
+          all answers.
         </p>
         <ScrollableDropdown
           dispName="Form language"

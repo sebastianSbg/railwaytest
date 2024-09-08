@@ -204,7 +204,7 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
               className="form-select"
               {...register("addr_country")}
               id="addr_country"
-              onChange={(e) => {
+              onBlur={(e) => {
                 trigger("addr_country");
                 ref
                   ? (ref.current = {
