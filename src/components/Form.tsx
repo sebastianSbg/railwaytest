@@ -76,7 +76,7 @@ const Form = () => {
   const index = 3;
 
   const result = areAllTrueExcludingIndex(booleanArray, index);
-  // console.log(result); // Output: true
+  console.log(result); // Output: true
 
   const [numGuests, setNumGuests] = useState(1);
   // const nightStayRadio = useRef(0);
@@ -167,16 +167,16 @@ const Form = () => {
     data = { ...data, signature: refSignature.current.getSVG() };
     data = { ...data, signature_date: new Date() };
     data = { ...data, abnb_id: AIRBNB_ID, abnb_name: AIRBNB_NAME };
-    console.log(data);
+    // console.log(data);
 
     axios
       .post(TARGET_SERVER, data)
       .then((response) => {
-        // console.log("Form submitted successfully:", response.data);
+        console.log("Form submitted successfully:", response.data);
         setFormSubmitted(true);
       })
       .catch((error) => {
-        // console.error("Error submitting form:", error);
+        console.error("Error submitting form:", error);
         // Handle error (e.g., show an error message to the user)
       })
       .finally(() => {
