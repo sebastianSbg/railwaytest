@@ -120,7 +120,7 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 id="steet"
                 type="text"
                 className="form-control"
-                onBlur={(e) => {
+                onChange={(e) => {
                   trigger("addr_street");
                   ref
                     ? (ref.current = {
@@ -149,7 +149,7 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 type="text"
                 className="form-control"
                 placeholder={set_placeholder("addr_city", ref)}
-                onBlur={(e) => {
+                onChange={(e) => {
                   trigger("addr_city");
                   ref
                     ? (ref.current = {
@@ -178,7 +178,7 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
                 type="number"
                 className="form-control"
                 placeholder={set_placeholder("addr_zip", ref)}
-                onBlur={(e) => {
+                onChange={(e) => {
                   trigger("addr_zip");
                   ref
                     ? (ref.current = {
@@ -204,7 +204,7 @@ export const FormAddress = forwardRef<any, FormAddressProps>(
               className="form-select"
               {...register("addr_country")}
               id="addr_country"
-              onBlur={(e) => {
+              onChange={(e) => {
                 trigger("addr_country");
                 ref
                   ? (ref.current = {

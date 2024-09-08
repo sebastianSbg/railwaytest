@@ -120,7 +120,7 @@ export const FormID = forwardRef<any, FormIDProps>(
                 id="id_number"
                 type="text"
                 className="form-control"
-                onBlur={(e) => {
+                onChange={(e) => {
                   trigger("id_number");
                   ref
                     ? (ref.current = {
@@ -181,7 +181,7 @@ export const FormID = forwardRef<any, FormIDProps>(
                 id="id_institution"
                 type="text"
                 className="form-control"
-                onBlur={(e) => {
+                onChange={(e) => {
                   trigger("id_institution");
                   ref
                     ? (ref.current = {
@@ -207,7 +207,7 @@ export const FormID = forwardRef<any, FormIDProps>(
               className="form-select"
               {...register("id_country")}
               id="id_country"
-              onBlur={(e) => {
+              onChange={(e) => {
                 trigger("id_country");
                 ref
                   ? (ref.current = {

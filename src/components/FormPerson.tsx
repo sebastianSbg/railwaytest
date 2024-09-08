@@ -141,7 +141,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 type="text"
                 className="form-control"
                 placeholder={set_placeholder("person_first_name_" + id, ref)}
-                onBlur={(e) => {
+                onChange={(e) => {
                   trigger("person_first_name");
                   ref
                     ? (ref.current["person_first_name_" + id] = e.target.value)
@@ -167,7 +167,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 type="text"
                 placeholder={set_placeholder("person_last_name_" + id, ref)}
                 className="form-control"
-                onBlur={(e) => {
+                onChange={(e) => {
                   trigger("person_last_name");
                   ref
                     ? (ref.current["person_last_name_" + id] = e.target.value)
@@ -189,7 +189,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_country")}
               id="person_country"
-              onBlur={(e) => {
+              onChange={(e) => {
                 trigger("person_country");
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
@@ -219,7 +219,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_sex")}
               id="person_sex"
-              onBlur={(e) => {
+              onChange={(e) => {
                 trigger("person_sex");
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
               }}
