@@ -96,12 +96,8 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
       setValue,
     } = useForm<FormPersonRef>({ resolver: zodResolver(schema) });
 
-    // useEffect to handle validation after mounting
-    useEffect(() => {
-      setTimeout(() => {
-        trigger(); // Trigger validation for all fields to catch autofill changes
-      }, 500); // Adjust delay as needed to allow autofill to complete
-    }, [trigger]);
+    const sleep = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
 
     useEffect(() => {
       console.log("person_valid_changed");
@@ -148,12 +144,14 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 type="text"
                 className="form-control"
                 placeholder={set_placeholder("person_first_name_" + id, ref)}
-                onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
+                onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
                   // trigger("person_first_name");
                   ref
                     ? (ref.current["person_first_name_" + id] = e.target.value)
                     : null;
                   console.log("Name input");
+                  await sleep(300);
+                  trigger("person_first_name");
                 }}
                 onBlur={() => {
                   trigger("person_first_name");
@@ -179,10 +177,10 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 placeholder={set_placeholder("person_last_name_" + id, ref)}
                 className="form-control"
                 onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  trigger("person_last_name");
                   ref
                     ? (ref.current["person_last_name_" + id] = e.target.value)
                     : null;
+                  trigger("person_last_name");
                 }}
               />
             </div>
