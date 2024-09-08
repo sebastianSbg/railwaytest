@@ -194,29 +194,22 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
             </span>
             <select
               className="form-select"
-              {...register("person_country", {
-                validate: (value) => value !== "" || "Please select a country.", // Ensure placeholder is not valid
-              })}
+              {...register("person_country")}
               id="person_country"
               onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
-                // Update the ref with the selected value
-                ref
-                  ? (ref.current["person_country_" + id] = e.target.value)
-                  : null;
-
-                // Delay before triggering validation
-                await sleep(300);
-
-                // Trigger validation for the field
-                trigger("person_country");
+                console.log("country change");
+                // ref
+                //   ? (ref.current["person_country_" + id] = e.target.value)
+                //   : null;
+                // await sleep(1000);
+                // trigger("person_country");
               }}
             >
-              <option value="">Please select a country</option>{" "}
-              {/* Placeholder with empty value */}
+              <option selected>
+                {set_placeholder("person_country_" + id, ref)}
+              </option>
               {disp_country_options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
+                <option value={option}>{option}</option>
               ))}
             </select>
           </div>
