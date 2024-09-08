@@ -196,8 +196,8 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_country")}
               id="person_country"
-              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
-                console.log("country change");
+              onChange={() => {
+                console.log("country input");
                 // ref
                 //   ? (ref.current["person_country_" + id] = e.target.value)
                 //   : null;
