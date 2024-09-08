@@ -200,14 +200,14 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                   value !== "" || "Please select a valid country.", // Ensures placeholder is not treated as valid
               })}
               id="person_country"
-              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+              onBlur={async (e: React.ChangeEvent<HTMLSelectElement>) => {
                 // Update the ref with the selected value
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
                   : null;
 
-                // Optional delay before triggering validation
-                await sleep(300);
+                // // Optional delay before triggering validation
+                // await sleep(300);
 
                 // Trigger validation for the person_country field
                 trigger("person_country");
@@ -237,9 +237,8 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_sex")}
               id="person_sex"
-              onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
+              onBlur={async (e: React.ChangeEvent<HTMLSelectElement>) => {
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
-                await sleep(300);
                 trigger("person_sex");
               }}
             >
