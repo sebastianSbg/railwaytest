@@ -153,6 +153,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                   ref
                     ? (ref.current["person_first_name_" + id] = e.target.value)
                     : null;
+                  console.log("Name input");
                 }}
                 onBlur={() => {
                   trigger("person_first_name");
@@ -199,7 +200,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_country")}
               id="person_country"
-              onChange={(e) => {
+              onBlur={(e) => {
                 trigger("person_country");
                 ref
                   ? (ref.current["person_country_" + id] = e.target.value)
