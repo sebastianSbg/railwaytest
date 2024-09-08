@@ -96,6 +96,13 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
       setValue,
     } = useForm<FormPersonRef>({ resolver: zodResolver(schema) });
 
+    // useEffect to handle validation after mounting
+    useEffect(() => {
+      setTimeout(() => {
+        trigger(); // Trigger validation for all fields to catch autofill changes
+      }, 500); // Adjust delay as needed to allow autofill to complete
+    }, [trigger]);
+
     useEffect(() => {
       console.log("person_valid_changed");
       console.log(isValid);
@@ -219,7 +226,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
               className="form-select"
               {...register("person_sex")}
               id="person_sex"
-              onChange={(e) => {
+              onBlur={(e) => {
                 trigger("person_sex");
                 ref ? (ref.current["person_sex_" + id] = e.target.value) : null;
               }}
