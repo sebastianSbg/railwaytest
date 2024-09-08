@@ -141,7 +141,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 type="text"
                 className="form-control"
                 placeholder={set_placeholder("person_first_name_" + id, ref)}
-                onChange={(e) => {
+                onInput={(e) => {
                   trigger("person_first_name");
                   ref
                     ? (ref.current["person_first_name_" + id] = e.target.value)
@@ -167,7 +167,7 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                 type="text"
                 placeholder={set_placeholder("person_last_name_" + id, ref)}
                 className="form-control"
-                onChange={(e) => {
+                onInput={(e) => {
                   trigger("person_last_name");
                   ref
                     ? (ref.current["person_last_name_" + id] = e.target.value)
