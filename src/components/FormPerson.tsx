@@ -202,8 +202,19 @@ export const FormPerson = forwardRef<any, FormPersonProps>(
                   : null;
                 trigger("person_country");
               }}
-              onInput={() => {
+              onChange={() => {
                 console.log("change of country");
+                // ref
+                //   ? (ref.current["person_country_" + id] = e.target.value)
+                //   : null;
+                // trigger("person_country");
+              }}
+              onInput={() => {
+                console.log("input of country");
+                // ref
+                //   ? (ref.current["person_country_" + id] = e.target.value)
+                //   : null;
+                // trigger("person_country");
               }}
             >
               <option selected>
