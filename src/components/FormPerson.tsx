@@ -30,9 +30,18 @@ const schema = z.object({
     .refine(noNumbers, { message: "Last name should not contain numbers." }),
   person_country: z.string().min(1, { message: "Please select a country." }),
   person_sex: z.string().min(1, { message: "Please select a sex." }),
-  person_birth_date: z.date({ message: "Please select a birth date." }),
+  person_birth_date: z.date({ message: "Please select a birth date." }).refine(
+    (date) => {
+      const twelveMonthsAgo = new Date();
+      twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+      return date <= twelveMonthsAgo;
+    },
+    {
+      message:
+        "Children younger than 12 months don't have to be registered. Please remove this guest or correct the age.",
+    }
+  ),
 });
-
 export type FormPersonRef = z.infer<typeof schema>; // this is like an interface
 
 export const FormPerson = forwardRef<any, FormPersonProps>(

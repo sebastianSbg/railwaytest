@@ -18,7 +18,10 @@ interface FormIDProps {
 const schema = z.object({
   id_valid: z.boolean(),
   id_number: z.string().min(5, { message: "Invalid ID" }),
-  id_issue_date: z.date(),
+  id_issue_date: z.date().refine(
+    (date) => date < new Date(new Date().setHours(0, 0, 0, 0)), // Ensure the date is before today
+    { message: "Issue date cannot be today or in the future." }
+  ),
   id_institution: z.string(),
   id_country: z
     .string()

@@ -223,7 +223,7 @@ const Form = () => {
                 ))}
               {radioButton === 0 && (
                 <FormAddress
-                  disp_heading={"Address"}
+                  disp_heading={"Guest Address (not Airbnb Address)"}
                   disp_string={["Street", "City", "Zip", "Country"]}
                   country_choises={countriesEN}
                   onValid={setAddrValid}
