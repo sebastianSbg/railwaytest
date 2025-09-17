@@ -21,8 +21,8 @@ const schema = z.object({
     .min(3, { message: "Invalid city" })
     .refine(noNumbers, { message: "City should not contain numbers" }),
   addr_zip: z
-    .number({ message: "Invalid ZIP code" })
-    .min(1000, { message: "Invalid ZIP code" }),
+    .number({ message: "The ZIP code must be a number." })
+    .min(1000, { message: "Zip Code must be larger than 1000." }),
   addr_country: z
     .string()
     .min(1, { message: "Select a country" })

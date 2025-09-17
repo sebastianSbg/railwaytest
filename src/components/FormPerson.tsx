@@ -32,13 +32,12 @@ const schema = z.object({
   person_sex: z.string().min(1, { message: "Please select a sex." }),
   person_birth_date: z.date({ message: "Please select a birth date." }).refine(
     (date) => {
-      const twelveMonthsAgo = new Date();
-      twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-      return date <= twelveMonthsAgo;
+      const sixteenYearsAgo = new Date();
+      sixteenYearsAgo.setFullYear(sixteenYearsAgo.getFullYear() - 16);
+      return date <= sixteenYearsAgo;
     },
     {
-      message:
-        "Children younger than 12 months don't have to be registered. Please remove this guest or correct the age.",
+      message: "Only people aged 16 or older should be registered.",
     }
   ),
 });

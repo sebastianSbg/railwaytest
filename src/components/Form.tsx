@@ -196,7 +196,11 @@ const Form = () => {
                 onRadioChange={onRadioButtonUpdate}
               />
               <FormStay
-                disp_string={["Arrival date", "Departure date", "# of guests"]}
+                disp_string={[
+                  "Arrival date",
+                  "Departure date",
+                  "# of guests 16 years or older",
+                ]}
                 onChangeNumGuests={setNumGuests}
                 onIsValid={setStayValid}
                 ref={refFormData}
