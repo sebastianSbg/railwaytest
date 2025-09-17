@@ -15,13 +15,24 @@ interface FormStayProps {
 const schema = z
   .object({
     stay_valid: z.boolean(),
-    stay_arrival_date: z.date(),
-    stay_departure_date: z.date(),
+    stay_arrival_date: z.date({ required_error: "Arrival date is required" }),
+    stay_departure_date: z.date({
+      required_error: "Departure date is required",
+    }),
     stay_num_of_guests: z.number({ message: "Required" }).min(1),
   })
-  .refine((data) => data.stay_departure_date > data.stay_arrival_date, {
-    path: ["stay_departure_date"],
-    message: "Departure date must be after arrival date.",
+  .superRefine((data, ctx) => {
+    if (
+      data.stay_arrival_date &&
+      data.stay_departure_date &&
+      data.stay_departure_date <= data.stay_arrival_date
+    ) {
+      ctx.addIssue({
+        path: ["stay_departure_date"],
+        code: z.ZodIssueCode.custom,
+        message: "Departure date must be after arrival date.",
+      });
+    }
   });
 
 export type FormStayRef = z.infer<typeof schema>; // this should be used as the ref
