@@ -64,12 +64,20 @@ export const FormStay = forwardRef<any, FormStayProps>(
               className="form-select"
               id="stay_num_guests"
               onBlur={() => {
-                trigger(["stay_num_of_guests"]);
+                trigger([
+                  "stay_arrival_date",
+                  "stay_num_of_guests",
+                  "stay_departure_date",
+                ]);
               }}
               onChange={(e) => {
                 const value = parseInt(e.target.value);
                 setValue("stay_num_of_guests", value);
-                trigger(["stay_num_of_guests"]);
+                trigger([
+                  "stay_arrival_date",
+                  "stay_num_of_guests",
+                  "stay_departure_date",
+                ]);
                 ref.current = {
                   ...ref.current,
                   stay_num_of_guests: value,
