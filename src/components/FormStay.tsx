@@ -64,20 +64,12 @@ export const FormStay = forwardRef<any, FormStayProps>(
               className="form-select"
               id="stay_num_guests"
               onBlur={() => {
-                trigger([
-                  "stay_arrival_date",
-                  "stay_departure_date",
-                  "stay_num_of_guests",
-                ]);
+                trigger(["stay_num_of_guests"]);
               }}
               onChange={(e) => {
                 const value = parseInt(e.target.value);
                 setValue("stay_num_of_guests", value);
-                trigger([
-                  "stay_arrival_date",
-                  "stay_departure_date",
-                  "stay_num_of_guests",
-                ]);
+                trigger(["stay_num_of_guests"]);
                 ref.current = {
                   ...ref.current,
                   stay_num_of_guests: value,
@@ -111,7 +103,7 @@ export const FormStay = forwardRef<any, FormStayProps>(
                 onChange={(date: Date | null) => {
                   setStartDate(date);
                   date ? setValue("stay_arrival_date", date) : null;
-                  trigger(["stay_arrival_date", "stay_departure_date"]);
+                  trigger(["stay_arrival_date", "stay_num_of_guests"]);
                   ref.current = {
                     ...ref.current,
                     stay_arrival_date: date,
@@ -122,7 +114,7 @@ export const FormStay = forwardRef<any, FormStayProps>(
                 aria-label="Select a date"
                 aria-describedby="datepicker"
                 onBlur={() => {
-                  trigger(["stay_arrival_date", "stay_departure_date"]);
+                  trigger(["stay_arrival_date", "stay_num_of_guests"]);
                 }}
               />
             </div>
@@ -143,7 +135,11 @@ export const FormStay = forwardRef<any, FormStayProps>(
                 onChange={(date: Date | null) => {
                   setStartDate2(date);
                   date ? setValue("stay_departure_date", date) : null;
-                  trigger("stay_departure_date");
+                  trigger([
+                    "stay_arrival_date",
+                    "stay_num_of_guests",
+                    "stay_departure_date",
+                  ]);
                   ref.current = {
                     ...ref.current,
                     stay_departure_date: date,
@@ -154,7 +150,11 @@ export const FormStay = forwardRef<any, FormStayProps>(
                 aria-label="Select a date"
                 aria-describedby="datepicker"
                 onBlur={() => {
-                  trigger("stay_departure_date");
+                  trigger([
+                    "stay_arrival_date",
+                    "stay_num_of_guests",
+                    "stay_departure_date",
+                  ]);
                 }}
               />
             </div>
