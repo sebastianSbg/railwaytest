@@ -15,24 +15,13 @@ interface FormStayProps {
 const schema = z
   .object({
     stay_valid: z.boolean(),
-    stay_arrival_date: z.date({ required_error: "Arrival date is required" }),
-    stay_departure_date: z.date({
-      required_error: "Departure date is required",
-    }),
+    stay_arrival_date: z.date(),
+    stay_departure_date: z.date(),
     stay_num_of_guests: z.number({ message: "Required" }).min(1),
   })
-  .superRefine((data, ctx) => {
-    if (
-      data.stay_arrival_date &&
-      data.stay_departure_date &&
-      data.stay_departure_date <= data.stay_arrival_date
-    ) {
-      ctx.addIssue({
-        path: ["stay_departure_date"],
-        code: z.ZodIssueCode.custom,
-        message: "Departure date must be after arrival date.",
-      });
-    }
+  .refine((data) => data.stay_departure_date > data.stay_arrival_date, {
+    path: ["stay_departure_date"],
+    message: "Departure date must be after arrival date.",
   });
 
 export type FormStayRef = z.infer<typeof schema>; // this should be used as the ref
@@ -66,6 +55,43 @@ export const FormStay = forwardRef<any, FormStayProps>(
       <>
         <div className="form-person">
           <h3 className="display-6 mb-3 center-text">Stay info</h3>
+
+          <div className="input-group mb-4">
+            <span className="input-group-text" id="basic-addon1">
+              {disp_string[2]}
+            </span>
+            <select
+              className="form-select"
+              id="stay_num_guests"
+              onBlur={() => {
+                trigger("stay_num_of_guests");
+              }}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
+                setValue("stay_num_of_guests", value);
+                trigger("stay_num_of_guests");
+                ref.current = {
+                  ...ref.current,
+                  stay_num_of_guests: value,
+                };
+                onChangeNumGuests(value);
+              }}
+            >
+              <option value="">Choose...</option>
+              {[1, 2, 3, 4, 5].map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {errors.stay_num_of_guests && (
+            <p className="text-danger floating-text-top">
+              {errors.stay_num_of_guests.message}
+            </p>
+          )}
+
           <div className="input-group mb-4 full-width">
             <span className="input-group-text">
               <Calendar />
@@ -128,42 +154,6 @@ export const FormStay = forwardRef<any, FormStayProps>(
           {errors.stay_departure_date && (
             <p className="text-danger floating-text-top">
               {errors.stay_departure_date.message}
-            </p>
-          )}
-
-          <div className="input-group mb-4">
-            <span className="input-group-text" id="basic-addon1">
-              {disp_string[2]}
-            </span>
-            <select
-              className="form-select"
-              id="stay_num_guests"
-              onBlur={() => {
-                trigger("stay_num_of_guests");
-              }}
-              onChange={(e) => {
-                const value = parseInt(e.target.value);
-                setValue("stay_num_of_guests", value);
-                trigger("stay_num_of_guests");
-                ref.current = {
-                  ...ref.current,
-                  stay_num_of_guests: value,
-                };
-                onChangeNumGuests(value);
-              }}
-            >
-              <option value="">Choose...</option>
-              {[1, 2, 3, 4, 5].map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {errors.stay_num_of_guests && (
-            <p className="text-danger floating-text-top">
-              {errors.stay_num_of_guests.message}
             </p>
           )}
         </div>
