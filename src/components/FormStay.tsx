@@ -12,12 +12,17 @@ interface FormStayProps {
   onIsValid?: any;
 }
 
-const schema = z.object({
-  stay_valid: z.boolean(),
-  stay_arrival_date: z.date(),
-  stay_departure_date: z.date(),
-  stay_num_of_guests: z.number({ message: "Required" }).min(1),
-});
+const schema = z
+  .object({
+    stay_valid: z.boolean(),
+    stay_arrival_date: z.date(),
+    stay_departure_date: z.date(),
+    stay_num_of_guests: z.number({ message: "Required" }).min(1),
+  })
+  .refine((data) => data.stay_departure_date > data.stay_arrival_date, {
+    path: ["stay_departure_date"],
+    message: "Departure date must be after arrival date.",
+  });
 
 export type FormStayRef = z.infer<typeof schema>; // this should be used as the ref
 

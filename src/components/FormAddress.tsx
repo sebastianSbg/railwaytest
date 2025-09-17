@@ -30,7 +30,10 @@ const schema = z.object({
       message: "Select your own address not the city of the Airbnb.",
     }),
   addr_zip: z
-    .number({ message: "The ZIP code must be a number." })
+    .number({
+      message:
+        "The ZIP code must be a number. If you live in a country with an alphanumeric ZIP code, just provide the numbers.",
+    })
     .min(1000, { message: "Zip Code must be larger than 1000." })
     .refine((zip) => zip !== 5111, {
       message: "Use your personal address, not the Airbnb ZIP code.",
