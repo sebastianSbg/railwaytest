@@ -15,14 +15,26 @@ const noNumbers = (value: string) => !/\d/.test(value);
 
 const schema = z.object({
   addr_valid: z.boolean(),
-  addr_street: z.string().min(3, { message: "Invalid street" }),
+  addr_street: z
+    .string()
+    .min(3, { message: "Invalid street" })
+    .refine((street) => !street.toLowerCase().includes("stierlingwaldst"), {
+      message:
+        "The Address has to be your personal address, not the Airbnb address.",
+    }),
   addr_city: z
     .string()
     .min(3, { message: "Invalid city" })
-    .refine(noNumbers, { message: "City should not contain numbers" }),
+    .refine(noNumbers, { message: "City should not contain numbers" })
+    .refine((city) => !/^b.rmoos$/i.test(city), {
+      message: "Select your own address not the city of the Airbnb.",
+    }),
   addr_zip: z
     .number({ message: "The ZIP code must be a number." })
-    .min(1000, { message: "Zip Code must be larger than 1000." }),
+    .min(1000, { message: "Zip Code must be larger than 1000." })
+    .refine((zip) => zip !== 5111, {
+      message: "Use your personal address, not the Airbnb ZIP code.",
+    }),
   addr_country: z
     .string()
     .min(1, { message: "Select a country" })
