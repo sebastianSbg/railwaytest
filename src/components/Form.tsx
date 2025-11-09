@@ -290,8 +290,8 @@ const Form = () => {
                     className="form-check-label"
                     htmlFor="flexCheckMarketing"
                   >
-                    (Optional) I wish to receive information including potential
-                    future promotions via email.
+                    (Optional) Keep me updated with news and special promotions
+                    by email.
                   </label>
                 </div>
 
