@@ -46,6 +46,7 @@ const Form = () => {
     false,
   ]);
   const [personValidOverall, setPersonValidOverall] = useState(false);
+  const [marketingConsent, setMarketingConsent] = useState(false);
 
   const setPersonValidID = (id: number, value: boolean) => {
     // console.log(personValid);
@@ -167,6 +168,7 @@ const Form = () => {
     data = { ...data, signature: refSignature.current.getSVG() };
     data = { ...data, signature_date: new Date() };
     data = { ...data, abnb_id: AIRBNB_ID, abnb_name: AIRBNB_NAME };
+    data = { ...data, marketing_consent: marketingConsent };
     // console.log(data);
 
     axios
@@ -272,6 +274,25 @@ const Form = () => {
                   {!confirmValid && (
                     <p className="text-danger">Must be checked.</p>
                   )}
+                </div>
+
+                <div className="form-check mb4">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckMarketing"
+                    checked={marketingConsent}
+                    onChange={(e) => setMarketingConsent(e.target.checked)}
+                    // checked
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexCheckMarketing"
+                  >
+                    (Optional) I wish to receive information including potential
+                    future promotions via email.
+                  </label>
                 </div>
 
                 <div className="center-text mt-4">

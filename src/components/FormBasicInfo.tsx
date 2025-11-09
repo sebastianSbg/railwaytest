@@ -1,6 +1,7 @@
 import { useState, forwardRef, useEffect } from "react";
 import ScrollableDropdown from "./ScrollableDropdown";
 import "../App.css";
+import { z } from "zod";
 
 interface cf {
   onRadioChange: any; //some function
@@ -9,6 +10,10 @@ interface cf {
 
 const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
   const [selectedOption, setSelectedOption] = useState(0);
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  const emailSchema = z.string().email("Please enter a valid email address");
 
   useEffect(() => {
     ref.current = {
@@ -16,6 +21,22 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
       stay_overnight: true,
     };
   }, []);
+
+  useEffect(() => {
+    // keep email in sync with parent ref
+    ref.current = {
+      ...ref.current,
+      email: email,
+    };
+
+    // ✅ Validate each time email changes
+    const result = emailSchema.safeParse(email);
+    if (!result.success && email.length > 0) {
+      setEmailError(result.error.errors[0].message);
+    } else {
+      setEmailError(null);
+    }
+  }, [email]);
 
   return (
     <>
@@ -40,6 +61,29 @@ const FormBasicInfo = ({ onRadioChange, onLanguageChange }: cf, ref: any) => {
           options={["English"]}
           onChange={onLanguageChange}
         />
+
+        <div className="input-group mb-4">
+          <span className="input-group-text" id="basic-addon1">
+            Email address
+          </span>
+          <input
+            type="email"
+            className={`form-control ${emailError ? "is-invalid" : ""}`}
+            placeholder="example@domain.com"
+            aria-label="Email"
+            aria-describedby="basic-addon1"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* ✅ Inline validation message */}
+        {emailError && (
+          <div className="text-danger mb-3" style={{ fontSize: "0.9em" }}>
+            {emailError}
+          </div>
+        )}
 
         <div className="form-check mb-2">
           <input
