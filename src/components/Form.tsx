@@ -284,7 +284,7 @@ const Form = () => {
                     type="checkbox"
                     value=""
                     id="flexCheckForBusiness"
-                    checked={marketingConsent}
+                    checked={forBusiness}
                     onChange={(e) => setForBusiness(e.target.checked)}
                     // checked
                   />
