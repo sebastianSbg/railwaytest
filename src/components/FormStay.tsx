@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 import { Calendar } from "react-bootstrap-icons";
+import { format } from "date-fns";
 
 interface FormStayProps {
   disp_string: string[];
@@ -115,7 +116,7 @@ export const FormStay = forwardRef<any, FormStayProps>(
                 onChange={(date: Date | null) => {
                   setStartDate(date);
                   if (date) {
-                    const formattedDate = date.toISOString().slice(0, 10); // "YYYY-MM-DD"
+                    const formattedDate = format(date, "yyyy-MM-dd"); // "YYYY-MM-DD"
                     setValue("stay_arrival_date", formattedDate);
                     ref.current = {
                       ...ref.current,
@@ -158,7 +159,7 @@ export const FormStay = forwardRef<any, FormStayProps>(
                 onChange={(date: Date | null) => {
                   setStartDate2(date);
                   if (date) {
-                    const formattedDate = date.toISOString().slice(0, 10); // "YYYY-MM-DD"
+                    const formattedDate = format(date, "yyyy-MM-dd"); // "YYYY-MM-DD"
                     setValue("stay_departure_date", formattedDate);
                     ref.current = {
                       ...ref.current,
