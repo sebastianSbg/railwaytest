@@ -47,6 +47,7 @@ const Form = () => {
   ]);
   const [personValidOverall, setPersonValidOverall] = useState(false);
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const [forBusiness, setForBusiness] = useState(false);
 
   const setPersonValidID = (id: number, value: boolean) => {
     // console.log(personValid);
@@ -169,6 +170,7 @@ const Form = () => {
     data = { ...data, signature_date: new Date() };
     data = { ...data, abnb_id: AIRBNB_ID, abnb_name: AIRBNB_NAME };
     data = { ...data, marketing_consent: marketingConsent };
+    data = { ...data, for_business: forBusiness };
     // console.log(data);
 
     axios
@@ -274,6 +276,25 @@ const Form = () => {
                   {!confirmValid && (
                     <p className="text-danger">Must be checked.</p>
                   )}
+                </div>
+
+                <div className="form-check mb4">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="flexCheckForBusiness"
+                    checked={marketingConsent}
+                    onChange={(e) => setForBusiness(e.target.checked)}
+                    // checked
+                  />
+                  <label
+                    className="form-check-label"
+                    htmlFor="flexCheckForBusiness"
+                  >
+                    The primary purpose of this trip/stay is for business
+                    reasons.
+                  </label>
                 </div>
 
                 <div className="form-check mb4">
